@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Expense Manager</string>
+
+    <string name="name">Enter valid name</string>
+    <string name="email">Enter valid email Id</string>
+    <string name="contact">Enter valid contact no</string>
+    <string name="password">Enter valid password</string>
+    <string name="not_match_password">Password doesn\'t match</string>
+    <string name="title_activity_navigation">Navigation</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="open_drawer">Open Drawer</string>
+    <string name="close_drawer">Close Drawer</string>
+
+
+</resources>
