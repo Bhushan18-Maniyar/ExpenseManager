@@ -83,7 +83,7 @@ public class SplashScreen extends AppCompatActivity {
 //                    startActivity(new Intent(SplashScreen.this, Dashboard.class));
                     return;
                 } else {
-                    Toast.makeText(SplashScreen.this, "Try after some time..", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(SplashScreen.this,Login.class));
                 }
             }
         });

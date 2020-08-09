@@ -47,7 +47,7 @@ public class SQLite_Login extends SQLiteOpenHelper {
         SQLiteDatabase database = getWritableDatabase();
         SQLiteStatement statement = database.compileStatement("DELETE FROM LoginDetail WHERE email = ?");
         statement.clearBindings();
-        statement.bindString(0,email);
+        statement.bindString(1,email);
         statement.execute();
     }
 

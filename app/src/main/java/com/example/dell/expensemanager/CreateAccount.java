@@ -133,7 +133,7 @@ public class CreateAccount extends AppCompatActivity {
             userInfo.put("Password",password.getText().toString().trim());
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://expense-manager-9b616.firebaseio.com/"+uid+"");
-            databaseReference.child("Personal Detail").setValue(userInfo);
+            databaseReference.child("Personal_Detail").setValue(userInfo);
             Toast.makeText(this,"THAI GYU BC...",Toast.LENGTH_LONG).show();
         }
 
