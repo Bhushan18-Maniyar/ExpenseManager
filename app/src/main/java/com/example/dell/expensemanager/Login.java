@@ -65,7 +65,8 @@ public class Login extends AppCompatActivity {
 
                     if (keep_Me_Login.isChecked()){
                         //                    if keep me login then insert data to database Table ...
-                        startKeppSignIn();
+                        SplashScreen.sqLite_login.insertData(email.getText().toString().trim(),password.getText().toString().trim()); // inserting data to TABLE
+                        startSignIn();
                         finish();
                     } else {
                         startSignIn();
@@ -93,24 +94,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(Login.this, Dashboard.class));
-                } else {
-                    Toast.makeText(Login.this, "Invalid credentials !", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-    private void startKeppSignIn() {
-        String useremail = email.getText().toString();
-        String userpass = password.getText().toString();
-
-        firebaseAuth.signInWithEmailAndPassword(useremail, userpass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-//                    If task successful then store data in SQLite .................
-                    SplashScreen.sqLite_login.insertData(email.getText().toString().trim(),password.getText().toString().trim()); // inserting data to TABLE
                     startActivity(new Intent(Login.this, Dashboard.class));
                 } else {
                     Toast.makeText(Login.this, "Invalid credentials !", Toast.LENGTH_LONG).show();

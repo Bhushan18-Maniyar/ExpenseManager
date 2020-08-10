@@ -80,11 +80,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
         switch (item.getItemId()) {
 
-            case R.id.add_income:{
-                Toast.makeText(Dashboard.this, "Add Income", Toast.LENGTH_SHORT).show();
-                break;
-            }
-
             case R.id.add_expense: {
                 Toast.makeText(Dashboard.this, "Add Expense", Toast.LENGTH_SHORT).show();
                 break;
@@ -106,10 +101,10 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
 
             case R.id.logout: {
-                SplashScreen.sqLite_login.deleteData(Dashboard.p.getEmail());
+                SplashScreen.sqLite_login.deleteData(FirebaseAuth.getInstance().getCurrentUser().getEmail());
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(Dashboard.this, Login.class));
-                Toast.makeText(Dashboard.this, "Log out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Dashboard.this, "Logedout", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
             }
@@ -136,7 +131,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     header_email.setText(p.getEmail());
 
                 } catch(Exception e){
-                    Toast.makeText(Dashboard.this,"Error try after some time..!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(Dashboard.this,"Error !",Toast.LENGTH_LONG).show();
                 }
             }
             @Override
