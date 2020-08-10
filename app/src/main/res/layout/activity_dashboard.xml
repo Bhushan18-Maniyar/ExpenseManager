@@ -7,8 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Dashboard"
-    tools:openDrawer="start">
-
+    >
+<!--tools:openDrawer="start"-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,9 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/headingColor"
-            app:title="DASHBOARD"
+            app:title="Dashboard"
             android:layout_gravity="start"
-            app:titleTextColor="@color/colorAccent" />
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
         <FrameLayout
             android:id="@+id/fragment"

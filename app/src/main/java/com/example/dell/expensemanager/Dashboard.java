@@ -39,8 +39,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("DashBoard");
-        toolbar.bringToFront();
+        toolbar.setTitle("Dashboard");
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
