@@ -15,7 +15,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreen extends AppCompatActivity {
-//                                  5000 ///
+
     public static SQLite_Login sqLite_login;
 
     private FirebaseAuth firebaseAuth;

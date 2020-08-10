@@ -29,7 +29,6 @@ public class SQLite_Login extends SQLiteOpenHelper {
     public void queryData(String sql){
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL(sql);
-
     }
 
     public void insertData(String email, String password){

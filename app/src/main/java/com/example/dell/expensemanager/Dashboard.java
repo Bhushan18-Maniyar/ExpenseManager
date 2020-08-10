@@ -2,7 +2,6 @@ package com.example.dell.expensemanager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -16,24 +15,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Map;
-import java.util.zip.Inflater;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import static com.example.dell.expensemanager.R.layout.navigation_header;
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navigationView;
     DrawerLayout drawerLayout;
-    TextView email, password;
     TextView header_email, header_name;
     String user_id = "";
     static Personal_Detail_Navigation_Header p;
@@ -64,16 +57,10 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         header_name = v.findViewById(R.id.nav_person_name);
         header_email = v.findViewById(R.id.nav_person_email);
 
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             user_id = user.getUid();
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            email.setText(user.getUid());
             Toast.makeText(this, user.getUid(), Toast.LENGTH_LONG).show();
             getHeader();
         }
@@ -90,6 +77,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
         switch (item.getItemId()) {
 
             case R.id.add_expense: {

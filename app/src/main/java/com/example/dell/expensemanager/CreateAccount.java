@@ -134,7 +134,7 @@ public class CreateAccount extends AppCompatActivity {
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://expense-manager-9b616.firebaseio.com/"+uid+"");
             databaseReference.child("Personal_Detail").setValue(userInfo);
-            Toast.makeText(this,"THAI GYU BC...",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"THAI GYU ...",Toast.LENGTH_LONG).show();
         }
 
 
