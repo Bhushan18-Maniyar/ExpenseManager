@@ -2,25 +2,23 @@ package com.example.dell.expensemanager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.utility.RegexTemplate;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,11 +34,16 @@ import static com.basgeekball.awesomevalidation.ValidationStyle.UNDERLABEL;
 
 public class CreateAccount extends AppCompatActivity {
 
-    EditText name, email, contact_no, password, confirmpassword;
+    EditText name, email, contact_no;
+    EditText password, confirmpassword;
 
     Button create_acc;
 
     Firebase firebase;
+    ImageButton pass_eye, confirm_pass_eye;
+
+    boolean showpass = false;
+    boolean show_confirm_pass = false;
 
     //    Validation
 
@@ -60,6 +63,8 @@ public class CreateAccount extends AppCompatActivity {
         contact_no = findViewById(R.id.contact_no);
         password = findViewById(R.id.password);
         confirmpassword = findViewById(R.id.confirm_password);
+        pass_eye = findViewById(R.id.pass_eye);
+        confirm_pass_eye = findViewById(R.id.confirm_pass_eye);
 
         create_acc = findViewById(R.id.create_acc_btn);
 
@@ -72,7 +77,7 @@ public class CreateAccount extends AppCompatActivity {
 
         mAwesomeValidation.addValidation(this, R.id.name, "[a-zA-Z\\s]+", R.string.name);
         mAwesomeValidation.addValidation(this, R.id.contact_no, "^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$", R.string.contact);
-        mAwesomeValidation.addValidation(this, R.id.email, android.util.Patterns.EMAIL_ADDRESS, R.string.email);
+        mAwesomeValidation.addValidation(this, R.id.email, Patterns.EMAIL_ADDRESS, R.string.email);
 // to validate the confirmation of another field
         String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
         mAwesomeValidation.addValidation(this, R.id.password, regexPassword, R.string.password);
@@ -90,6 +95,31 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
+//******************************************** Password Toggle methods ************************************************************
+        pass_eye.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(password.getTransformationMethod().getClass().getSimpleName().equals("PasswordTransformationMethod")){
+                    password.setTransformationMethod(new SingleLineTransformationMethod());
+                } else {
+                    password.setTransformationMethod(new PasswordTransformationMethod());
+                }
+                password.setSelection(password.getText().length());
+            }
+        });
+        confirm_pass_eye.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(confirmpassword.getTransformationMethod().getClass().getSimpleName().equals("PasswordTransformationMethod")){
+                    confirmpassword.setTransformationMethod(new SingleLineTransformationMethod());
+                } else {
+                    confirmpassword.setTransformationMethod(new PasswordTransformationMethod());
+                }
+                confirmpassword.setSelection(confirmpassword.getText().length());
+            }
+        });
+//***************************************************************************************************************************************
+
     }
 
     private void createAccount() {
@@ -104,7 +134,7 @@ public class CreateAccount extends AppCompatActivity {
                     Toast.makeText(CreateAccount.this, "Authentication Successful.",Toast.LENGTH_SHORT).show();
                     storeData();
                 } else {
-                    // If sign in fails, display a message to the user.
+                    // If sign in fails, display a message to the user...
                     Toast.makeText(CreateAccount.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                 }

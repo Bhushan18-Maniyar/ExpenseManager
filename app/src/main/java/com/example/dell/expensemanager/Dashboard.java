@@ -106,7 +106,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
 
             case R.id.logout: {
-                SplashScreen.sqLite_login.deleteData(Dashboard.p.getEmail());
+                if(!SplashScreen.sqLite_login.isEmpty("LoginDetail")){
+                    SplashScreen.sqLite_login.deleteData(Dashboard.p.getEmail());
+                }
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(Dashboard.this, Login.class));
                 Toast.makeText(Dashboard.this, "Log out", Toast.LENGTH_SHORT).show();
