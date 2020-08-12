@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.firebase.client.Firebase;
@@ -21,18 +20,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    //Both fragment object
-    TextView tvTillDate,tvTPrice;
-    ListView lvItems;
-    FragmentManager fragmentManager;
-    Fragment TopFragment,BottomFragment;
-
 
     androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navigationView;
@@ -46,19 +36,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_dashboard);
 
         Firebase.setAndroidContext(this);
-
-        tvTillDate = findViewById(R.id.tvTillDate);
-        tvTPrice = findViewById(R.id.tvTPrice);
-        lvItems = findViewById(R.id.lvItems);
-        fragmentManager = getSupportFragmentManager();
-        TopFragment = fragmentManager.findFragmentById(R.id.TopFragment);
-        BottomFragment = fragmentManager.findFragmentById(R.id.BottomFragment);
-        fragmentManager.beginTransaction()
-                .show(TopFragment).
-                show(BottomFragment).
-                commit();
-
-
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -103,6 +80,11 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
         switch (item.getItemId()) {
 
+            case R.id.add_income:{
+                Toast.makeText(Dashboard.this, "Add Income", Toast.LENGTH_SHORT).show();
+                break;
+            }
+
             case R.id.add_expense: {
                 Toast.makeText(Dashboard.this, "Add Expense", Toast.LENGTH_SHORT).show();
                 break;
@@ -124,10 +106,10 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
 
             case R.id.logout: {
-                SplashScreen.sqLite_login.deleteData(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                SplashScreen.sqLite_login.deleteData(Dashboard.p.getEmail());
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(Dashboard.this, Login.class));
-                Toast.makeText(Dashboard.this, "Logedout", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Dashboard.this, "Log out", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
             }
@@ -154,7 +136,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     header_email.setText(p.getEmail());
 
                 } catch(Exception e){
-                    Toast.makeText(Dashboard.this,"Error !",Toast.LENGTH_LONG).show();
+                    Toast.makeText(Dashboard.this,"Error try after some time..!",Toast.LENGTH_LONG).show();
                 }
             }
             @Override
