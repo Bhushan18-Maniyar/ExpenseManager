@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,12 +29,13 @@ public class Login extends AppCompatActivity {
     EditText email, password;
     CheckBox keep_Me_Login;
     TextView createAccount;
+    ImageButton eye_password;
 
 
     //    Validation
     AwesomeValidation mAwesomeValidation;
 
-//    Firebase
+    //    Firebase
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
@@ -45,6 +49,7 @@ public class Login extends AppCompatActivity {
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        eye_password = findViewById(R.id.eye_password);
 
         keep_Me_Login = findViewById(R.id.keepMeLogin);
 
@@ -61,18 +66,30 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mAwesomeValidation.validate()){
+                if (mAwesomeValidation.validate()) {
 
-                    if (keep_Me_Login.isChecked()){
+                    if (keep_Me_Login.isChecked()) {
                         //                    if keep me login then insert data to database Table ...
                         startKeepSignIn();
                         finish();
                     } else {
                         startSignIn();
-                        Toast.makeText(Login.this,"thai che rah jo.. ;)",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Wait..", Toast.LENGTH_SHORT).show();
                     }
-
                 }
+            }
+        });
+
+        //******************************************** Password Toggle methods ************************************************************
+        eye_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (password.getTransformationMethod().getClass().getSimpleName().equals("PasswordTransformationMethod")) {
+                    password.setTransformationMethod(new SingleLineTransformationMethod());
+                } else {
+                    password.setTransformationMethod(new PasswordTransformationMethod());
+                }
+                password.setSelection(password.getText().length());
             }
         });
 
@@ -81,7 +98,7 @@ public class Login extends AppCompatActivity {
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Login.this,CreateAccount.class));
+                startActivity(new Intent(Login.this, CreateAccount.class));
             }
         });
     }
@@ -96,7 +113,7 @@ public class Login extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     startActivity(new Intent(Login.this, Dashboard.class));
                 } else {
-                    Toast.makeText(Login.this, "Invalid credentials !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this, "Invalid credentials :(", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -110,11 +127,11 @@ public class Login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-//                    If task successful then store data in SQLite .................
-                    SplashScreen.sqLite_login.insertData(email.getText().toString().trim(),password.getText().toString().trim()); // inserting data to TABLE
+//                    If task successful then store data in SQLite for keep me LOGIN  .................
+                    SplashScreen.sqLite_login.insertData(email.getText().toString().trim(), password.getText().toString().trim()); // inserting data to TABLE
                     startActivity(new Intent(Login.this, Dashboard.class));
                 } else {
-                    Toast.makeText(Login.this, "Invalid credentials !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this, "Invalid credentials :(", Toast.LENGTH_LONG).show();
                 }
             }
         });

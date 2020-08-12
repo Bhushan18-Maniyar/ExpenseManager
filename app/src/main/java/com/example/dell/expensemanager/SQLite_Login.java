@@ -10,16 +10,17 @@ import android.database.sqlite.SQLiteStatement;
 import androidx.annotation.Nullable;
 
 public class SQLite_Login extends SQLiteOpenHelper {
+
     public SQLite_Login(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
-    public boolean isEmpty(String TableName){
+    public boolean isEmpty(String tableName){
 
         SQLiteDatabase database = this.getReadableDatabase();
-        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,TableName);
+        int noOfRows = (int) DatabaseUtils.queryNumEntries(database,tableName);
 
-        if (NoOfRows == 0){
+        if (noOfRows == 0){
             return true;
         }else {
             return false;
