@@ -51,7 +51,8 @@ public class SplashScreen extends AppCompatActivity {
 
         final Intent i ;
 
-        if(sqLite_login.isEmpty("LoginDetail")){
+        if(sqLite_login.isEmpty("LoginDetail"))
+        {
             i = new Intent(this,Login.class);
         } else {
             i = new Intent(this,Dashboard.class);

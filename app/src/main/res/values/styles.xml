@@ -29,6 +29,17 @@
         <!--<item name="windowActionBar">false</item>-->
         <!--&lt;!&ndash; colorPrimary is used for the default action bar background &ndash;&gt;-->
         <!--<item name="windowActionModeOverlay">true</item>-->
+    <style name="Theme.App" parent="Theme.MaterialComponents">
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorOnSecondary">@color/colorPrimary</item>
+        <item name="colorOnSurface">@color/colorPrimary</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">4dp</item>
+    </style>
     <!--</style>-->
 
 </resources>

@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard"
-    tools:openDrawer="start">
+    tools:context=".Dashboard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,13 +27,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <fragment
+                    android:id="@+id/TopFragment"
+                    android:name="com.example.dell.expensemanager.TopDisplay"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    tools:layout="@layout/fragment_top_display" />
+
+                <fragment
+                    android:id="@+id/BottomFragment"
+                    android:name="com.example.dell.expensemanager.BottomDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    tools:layout="@layout/fragment_bottom_display" />
+
+
+            </LinearLayout>
         </FrameLayout>
+
+
     </LinearLayout>
+
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
@@ -44,6 +66,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/navigation_header"
         app:menu="@menu/navigation_menu" />
+
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

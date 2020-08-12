@@ -84,7 +84,7 @@ public class CreateAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mAwesomeValidation.validate()){
-                    Toast.makeText(CreateAccount.this," thai gyu halo OK ",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(CreateAccount.this,Login.class));
                     createAccount();
                 }
             }

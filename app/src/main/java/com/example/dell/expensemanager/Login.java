@@ -65,7 +65,7 @@ public class Login extends AppCompatActivity {
 
                     if (keep_Me_Login.isChecked()){
                         //                    if keep me login then insert data to database Table ...
-                        startKeppSignIn();
+                        startKeepSignIn();
                         finish();
                     } else {
                         startSignIn();
@@ -101,7 +101,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private void startKeppSignIn() {
+    private void startKeepSignIn() {
         String useremail = email.getText().toString();
         String userpass = password.getText().toString();
 
