@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -116,12 +118,13 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
 
             case R.id.view_expense_category_wise: {
-                Toast.makeText(Dashboard.this, "category wise", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Dashboard.this,CategoryViseGraph.class));
+
                 break;
             }
 
             case R.id.view_expense_date_wise: {
-                Toast.makeText(Dashboard.this, "date wise", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Dashboard.this,DateViseGraph.class));
                 break;
             }
 
