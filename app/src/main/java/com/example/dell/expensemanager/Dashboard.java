@@ -16,6 +16,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Date;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -86,7 +89,10 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         }
 
 //****************************************** Getting total expanse till now ******************************************
-        AddExpense.ref.addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail").
+                child(new Date().getYear()+1900+"").
+                child("Total");
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tvTPrice.setText(snapshot.getValue().toString());
