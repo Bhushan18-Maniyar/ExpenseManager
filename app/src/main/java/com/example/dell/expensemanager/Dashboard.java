@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.firebase.client.Firebase;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,6 +17,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,13 +31,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
-
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView tvTillDate,tvTPrice;
+    TextView tvTillDate, tvTPrice;
     ListView lvItems;
     FragmentManager fragmentManager;
-    Fragment TopFragment,BottomFragment;
+    Fragment TopFragment, BottomFragment;
 
     androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navigationView;
@@ -84,6 +89,32 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             Toast.makeText(this, user.getUid(), Toast.LENGTH_LONG).show();
             getHeader();
         }
+
+        getList();
+//****************************************** Getting total expanse till now ******************************************
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail").
+                child(new Date().getYear() + 1900 + "").
+                child("Total");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                tvTPrice.setText(snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+//*************************************************************************************************************************
+
+    }
+
+    private void getList() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Expense_Detail");
+
+//        Map<String, Map<String, Map<String, Map<String, String, String, String>>>> map = ;
+//        Map<String,>
     }
 
     @Override
@@ -100,12 +131,13 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
         switch (item.getItemId()) {
 
-            case R.id.add_income:{
+            case R.id.add_income: {
                 Toast.makeText(Dashboard.this, "Add Income", Toast.LENGTH_SHORT).show();
                 break;
             }
 
             case R.id.add_expense: {
+                startActivity(new Intent(Dashboard.this, AddExpense.class));
                 Toast.makeText(Dashboard.this, "Add Expense", Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -116,6 +148,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
 
             case R.id.view_expense_category_wise: {
+                startActivity(new Intent(Dashboard.this, CategoryWiseGraph.class));
                 Toast.makeText(Dashboard.this, "category wise", Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -147,18 +180,19 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try{
+                try {
                     p = new Personal_Detail_Navigation_Header(snapshot.child("Name").getValue().toString(),
-                                                              snapshot.child("Email").getValue().toString(),
-                                                              snapshot.child("Password").getValue().toString(),
-                                                              snapshot.child("Contact").getValue().toString());
+                            snapshot.child("Email").getValue().toString(),
+                            snapshot.child("Password").getValue().toString(),
+                            snapshot.child("Contact").getValue().toString());
                     header_name.setText(p.getName());
                     header_email.setText(p.getEmail());
 
-                } catch(Exception e){
-                    Toast.makeText(Dashboard.this,"Error try after some time..!",Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(Dashboard.this, "Error try after some time..!", Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

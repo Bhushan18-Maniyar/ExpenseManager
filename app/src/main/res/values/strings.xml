@@ -20,5 +20,31 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--Spinner array-->
+
+    <string-array name="expense_array_spinner">
+        <item>Family or Personal</item>
+        <item>Health</item>
+        <item>Food</item>
+        <item>Travelling</item>
+        <item>Entertaintment</item>
+        <item>Bills Payment</item>
+        <item>Shopping</item>
+        <item>Grocery</item>
+        <item>EMI</item>
+        <item>Other</item>
+    </string-array>
+
+
+    <!--Spinner array-->
+
+    <string-array name="payment_method_array_spinner">
+        <item>Cash</item>
+        <item>Check</item>
+        <item>Credit card</item>
+        <item>Debit card</item>
+        <item>UPI</item>
+    </string-array>
+
 
 </resources>

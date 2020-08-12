@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class DateViseGraph extends AppCompatActivity {
+public class DateWiseGraph extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

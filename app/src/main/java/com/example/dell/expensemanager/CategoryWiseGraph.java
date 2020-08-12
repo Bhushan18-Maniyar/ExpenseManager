@@ -21,43 +21,42 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+public class CategoryWiseGraph extends AppCompatActivity {
 
-public class CategoryViseGraph extends AppCompatActivity {
-
-    private static final String TAG = "CategoryViseGraph";
+    private static final String TAG = "CategoryWiseGraph";
     private LineChart mChart;
 
-     @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_vise_graph);
 
         Spinner spinner = (Spinner) findViewById(R.id.CategorySp);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.Category, android.R.layout.simple_spinner_item);
+                R.array.expense_array_spinner, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
         mChart = (LineChart) findViewById(R.id.CategoryChart);
-       // mChart.setOnChartGestureListener(CategoryViseGraph.this);
-        //mChart.setOnChartValueSelectedListener(CategoryViseGraph.this);
+        // mChart.setOnChartGestureListener(CategoryWiseGraph.this);
+        //mChart.setOnChartValueSelectedListener(CategoryWiseGraph.this);
 
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(false);
 
 
-        ArrayList<Entry>  yValues = new ArrayList<>();
-        yValues.add(new Entry(0,60f));
-//        yValues.add(new Entry(1,50f));
-//        yValues.add(new Entry(2,25f));
-//        yValues.add(new Entry(3,36f));
-//        yValues.add(new Entry(4,90f));
-//        yValues.add(new Entry(5,80f));
-//        yValues.add(new Entry(6,60f));
+        ArrayList<Entry> yValues = new ArrayList<>();
+        yValues.add(new Entry(0, 60f));
+        yValues.add(new Entry(1,50f));
+        yValues.add(new Entry(2,25f));
+        yValues.add(new Entry(3,36f));
+        yValues.add(new Entry(4,90f));
+        yValues.add(new Entry(5,80f));
+        yValues.add(new Entry(6,60f));
 
-        LineDataSet set1 = new LineDataSet(yValues,"Data Set 1");
+        LineDataSet set1 = new LineDataSet(yValues, "Data Set 1");
         set1.setFillAlpha(110);
         set1.setColor(Color.RED);
 
