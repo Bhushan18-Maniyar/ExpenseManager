@@ -30,6 +30,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     TextView header_email, header_name;
     String user_id = "";
     static Personal_Detail_Navigation_Header p;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
