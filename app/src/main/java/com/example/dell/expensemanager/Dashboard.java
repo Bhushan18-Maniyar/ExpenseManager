@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.firebase.client.Firebase;
@@ -20,9 +21,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    TextView tvTillDate,tvTPrice;
+    ListView lvItems;
+    FragmentManager fragmentManager;
+    Fragment TopFragment,BottomFragment;
 
     androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navigationView;
@@ -36,8 +45,18 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        Firebase.setAndroidContext(this);
+        tvTillDate = findViewById(R.id.tvTillDate);
+        tvTPrice = findViewById(R.id.tvTPrice);
+        lvItems = findViewById(R.id.lvItems);
+        fragmentManager = getSupportFragmentManager();
+        TopFragment = fragmentManager.findFragmentById(R.id.TopFragment);
+        BottomFragment = fragmentManager.findFragmentById(R.id.BottomFragment);
+        fragmentManager.beginTransaction()
+                .show(TopFragment).
+                show(BottomFragment).
+                commit();
 
+        Firebase.setAndroidContext(this);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Dashboard");
