@@ -106,6 +106,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
 
             case R.id.add_expense: {
+                startActivity(new Intent(Dashboard.this,AddExpense.class));
                 Toast.makeText(Dashboard.this, "Add Expense", Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -155,7 +156,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     header_name.setText(p.getName());
                     header_email.setText(p.getEmail());
 
-                } catch(Exception e){
+                } catch(Exception e) {
                     Toast.makeText(Dashboard.this,"Error try after some time..!",Toast.LENGTH_LONG).show();
                 }
             }
