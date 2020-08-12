@@ -91,7 +91,6 @@ public class CreateAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mAwesomeValidation.validate()){
-                    startActivity(new Intent(CreateAccount.this,Login.class));
                     createAccount();
                 }
             }
@@ -148,11 +147,6 @@ public class CreateAccount extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = "";
         if (user != null) {
-            // Name, email address, and profile photo Url
-            String user_email = user.getEmail();
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
             uid = user.getUid();
             Map<String,Object> userInfo = new HashMap<>();
             userInfo.put("Name",name.getText().toString().trim());
@@ -160,9 +154,10 @@ public class CreateAccount extends AppCompatActivity {
             userInfo.put("Contact",contact_no.getText().toString().trim());
             userInfo.put("Password",password.getText().toString().trim());
 
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://expense-manager-9b616.firebaseio.com/"+uid+"");
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(uid);
             databaseReference.child("Personal_Detail").setValue(userInfo);
-            Toast.makeText(this,"THAI GYU ...",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Account created..",Toast.LENGTH_LONG).show();
+            startActivity(new Intent(CreateAccount.this,Login.class));
         }
 
 

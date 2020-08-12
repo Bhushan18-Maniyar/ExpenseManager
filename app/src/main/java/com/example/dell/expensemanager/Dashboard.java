@@ -84,6 +84,20 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             Toast.makeText(this, user.getUid(), Toast.LENGTH_LONG).show();
             getHeader();
         }
+
+//****************************************** Getting total expanse till now ******************************************
+        AddExpense.ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                tvTPrice.setText(snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+//*************************************************************************************************************************
     }
 
     @Override
