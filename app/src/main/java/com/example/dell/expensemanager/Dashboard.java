@@ -54,7 +54,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_dashboard);
 
         data = new ArrayList<>();
-        data.add(new FirebaseData("500","Food","BBM pizza","cash"));
+//        data.add(new FirebaseData("500","Food","BBM pizza","cash"));
 
 
         tvTillDate = findViewById(R.id.tvTillDate);
