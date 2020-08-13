@@ -126,14 +126,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     for (DataSnapshot month : year.getChildren()) {
                         for (DataSnapshot date : month.getChildren()) {
                             for (DataSnapshot time : date.getChildren()) {
-//                                for (DataSnapshot datatime: time.getChildren()) {
-//                                    Toast.makeText(Dashboard.this, time.getKey(), Toast.LENGTH_SHORT).show();
-//                                    FirebaseData expense_data = new FirebaseData(
-//                                            (String) time.child("Ammount").getValue(),
-//                                            (String) time.child("Category").getValue(),
-//                                            (String) time.child("Detail").getValue(),
-//                                            (String) time.child("Payment Method").getValue());
-//                                    Toast.makeText(Dashboard.this, expense_data.getDetail(), Toast.LENGTH_SHORT).show();
                                     data.add( new FirebaseData(
                                             (String) time.child("Ammount").getValue(),
                                             (String) time.child("Category").getValue(),
