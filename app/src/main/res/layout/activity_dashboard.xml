@@ -50,6 +50,14 @@
                     tools:layout="@layout/fragment_bottom_display" />
 
 
+                <!--<ListView-->
+                    <!--android:id="@+id/list_dashboard"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_weight="3"-->
+                    <!--android:background="@color/button"-->
+                    <!--android:layout_height="0dp" />-->
+
+
             </LinearLayout>
         </FrameLayout>
 

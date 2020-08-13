@@ -18,8 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -34,7 +34,7 @@ import androidx.fragment.app.FragmentManager;
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView tvTillDate, tvTPrice;
-    ListView lvItems;
+    ListView dashboard_list_items;
     FragmentManager fragmentManager;
     Fragment TopFragment, BottomFragment;
 
@@ -43,22 +43,28 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     DrawerLayout drawerLayout;
     TextView header_email, header_name;
     String user_id = "";
+    private static final String TAG = "DATA";
     static Personal_Detail_Navigation_Header p;
+
+    ArrayList<FirebaseData> data ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        data = new ArrayList<>();
+        data.add(new FirebaseData("500","Food","BBM pizza","cash"));
+
+
         tvTillDate = findViewById(R.id.tvTillDate);
         tvTPrice = findViewById(R.id.tvTPrice);
-        lvItems = findViewById(R.id.lvItems);
+        dashboard_list_items = findViewById(R.id.list_dashboard);
         fragmentManager = getSupportFragmentManager();
         TopFragment = fragmentManager.findFragmentById(R.id.TopFragment);
-        BottomFragment = fragmentManager.findFragmentById(R.id.BottomFragment);
+//        BottomFragment = fragmentManager.findFragmentById(R.id.BottomFragment);
         fragmentManager.beginTransaction()
                 .show(TopFragment).
-                show(BottomFragment).
                 commit();
 
         Firebase.setAndroidContext(this);
@@ -111,10 +117,44 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void getList() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Expense_Detail");
 
-//        Map<String, Map<String, Map<String, Map<String, String, String, String>>>> map = ;
-//        Map<String,>
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot year : snapshot.getChildren()) {
+                    for (DataSnapshot month : year.getChildren()) {
+                        for (DataSnapshot date : month.getChildren()) {
+                            for (DataSnapshot time : date.getChildren()) {
+//                                for (DataSnapshot datatime: time.getChildren()) {
+//                                    Toast.makeText(Dashboard.this, time.getKey(), Toast.LENGTH_SHORT).show();
+//                                    FirebaseData expense_data = new FirebaseData(
+//                                            (String) time.child("Ammount").getValue(),
+//                                            (String) time.child("Category").getValue(),
+//                                            (String) time.child("Detail").getValue(),
+//                                            (String) time.child("Payment Method").getValue());
+//                                    Toast.makeText(Dashboard.this, expense_data.getDetail(), Toast.LENGTH_SHORT).show();
+                                    data.add( new FirebaseData(
+                                            (String) time.child("Ammount").getValue(),
+                                            (String) time.child("Category").getValue(),
+                                            (String) time.child("Detail").getValue(),
+                                            (String) time.child("Payment Method").getValue()));
+//                                Log.d(TAG,expense_data.getCategoty()+"");
+//                                }
+                            }
+                        }
+                    }
+                }
+//                listAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        ExpenseListAdapter listAdapter = new ExpenseListAdapter(this, data);
+        dashboard_list_items.setAdapter(listAdapter);
     }
 
     @Override
