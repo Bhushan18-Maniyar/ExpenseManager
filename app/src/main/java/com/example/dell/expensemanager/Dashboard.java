@@ -63,9 +63,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         dashboard_list_items = findViewById(R.id.list_dashboard);
         fragmentManager = getSupportFragmentManager();
         TopFragment = fragmentManager.findFragmentById(R.id.TopFragment);
-//        BottomFragment = fragmentManager.findFragmentById(R.id.BottomFragment);
+        BottomFragment = fragmentManager.findFragmentById(R.id.BottomFragment);
         fragmentManager.beginTransaction()
-                .show(TopFragment).
+                .show(TopFragment).show(BottomFragment).
                 commit();
 
         Firebase.setAndroidContext(this);
