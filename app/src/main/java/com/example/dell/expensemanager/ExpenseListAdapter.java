@@ -34,11 +34,13 @@ public class ExpenseListAdapter extends ArrayAdapter<FirebaseData> {
         TextView category = view.findViewById(R.id.category);
         TextView amount = view.findViewById(R.id.amount);
         TextView detail = view.findViewById(R.id.detail);
+        TextView time_date = view.findViewById(R.id.time_date);
 
 
         category.setText(Model.get(position).getCategory());
         amount.setText(Model.get(position).getAmount());
         detail.setText(Model.get(position).getDetail());
+        time_date.setText(Model.get(position).getTime() + " | " + Model.get(position).getDate());
 //        category.setText("Food");
 //        amount.setText("500");
 //        detail.setText("pizza");

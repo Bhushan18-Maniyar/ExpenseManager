@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,14 +47,14 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private static final String TAG = "DATA";
     static Personal_Detail_Navigation_Header p;
 
-    ArrayList<FirebaseData> data ;
+    ArrayList<FirebaseData> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        data = new ArrayList<>();
+
 //        data.add(new FirebaseData("500","Food","BBM pizza","cash"));
 
 
@@ -96,10 +97,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             getHeader();
         }
 
-        getList();
 //****************************************** Getting total expanse till now ******************************************
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail").
-                child(new Date().getYear() + 1900 + "").
                 child("Total");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -117,8 +116,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void getList() {
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail");
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -126,18 +124,17 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     for (DataSnapshot month : year.getChildren()) {
                         for (DataSnapshot date : month.getChildren()) {
                             for (DataSnapshot time : date.getChildren()) {
-                                    data.add( new FirebaseData(
-                                            (String) time.child("Ammount").getValue(),
-                                            (String) time.child("Category").getValue(),
-                                            (String) time.child("Detail").getValue(),
-                                            (String) time.child("Payment Method").getValue()));
-//                                Log.d(TAG,expense_data.getCategoty()+"");
-//                                }
+                                data.add(new FirebaseData(
+                                         time.child("Ammount").getValue() + "₹",
+                                         time.child("Category").getValue() + "",
+                                         time.child("Detail").getValue() + "",
+                                         time.child("Payment Method").getValue() + "",
+                                         time.getKey() + "",
+                                         date.getKey() + "-" + month.getKey() + "-" + year.getKey()));
                             }
                         }
                     }
                 }
-//                listAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -147,6 +144,20 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         });
         ExpenseListAdapter listAdapter = new ExpenseListAdapter(this, data);
         dashboard_list_items.setAdapter(listAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        data = new ArrayList<>();
+        getList();
+//        dashboard_list_items.notify();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        data.clear();
     }
 
     @Override

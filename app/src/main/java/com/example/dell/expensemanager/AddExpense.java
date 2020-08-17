@@ -107,9 +107,7 @@ public class AddExpense extends AppCompatActivity {
             String uid = user.getUid();
             Date d = new Date();
             String year = d.getYear() + 1900 + "";
-            ref = FirebaseDatabase.getInstance().getReference().child(uid).child("Expense_Detail").
-                    child(year).
-                    child("Total");
+            ref = FirebaseDatabase.getInstance().getReference().child(uid).child("Expense_Detail").child("Total");
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -156,6 +156,8 @@ public class CreateAccount extends AppCompatActivity {
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(uid);
             databaseReference.child("Personal_Detail").setValue(userInfo);
+
+            databaseReference.child("Expense_Detail").child("Total").setValue(0);
             Toast.makeText(this,"Account created..",Toast.LENGTH_LONG).show();
             startActivity(new Intent(CreateAccount.this,Login.class));
         }

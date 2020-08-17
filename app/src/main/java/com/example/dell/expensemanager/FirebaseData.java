@@ -1,16 +1,34 @@
 package com.example.dell.expensemanager;
 
 public class FirebaseData {
-    String amount, category, detail, payment_method;
+    String amount, category, detail, payment_method, time, date;
 
     public FirebaseData() {
     }
 
-    public FirebaseData(String amount, String category, String detail, String payment_method) {
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public FirebaseData(String amount, String category, String detail, String payment_method , String time, String date) {
         this.amount = amount;
         this.category = category;
         this.detail = detail;
         this.payment_method = payment_method;
+        this.time = time;
+        this.date = date;
     }
 
     public String getAmount() {
