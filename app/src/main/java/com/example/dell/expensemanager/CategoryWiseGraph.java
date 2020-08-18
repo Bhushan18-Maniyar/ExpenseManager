@@ -40,18 +40,19 @@ public class CategoryWiseGraph extends AppCompatActivity {
         //mChart.setOnChartValueSelectedListener(CategoryWiseGraph.this);
 
         mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(false);
+        mChart.setScaleEnabled(true);
+        mChart.setClickable(true);
 
-        Toast.makeText(this,"Start",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,"Start",Toast.LENGTH_SHORT).show();
         ArrayList<Entry> yValues = new ArrayList<>();
-        float j = 10;
+        float j = 3;
         int length = Dashboard.data.size();
         for(int i = 0 ; i < length ; i++){
             yValues.add(new Entry(j,Float.parseFloat(Dashboard.data.get(i).getAmount())));
-            j = j + 10;
-            Toast.makeText(this,Dashboard.data.get(i).getAmount(),Toast.LENGTH_SHORT).show();
+            j = j + 3;
+//            Toast.makeText(this,Dashboard.data.get(i).getAmount(),Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(this,"End",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,"End",Toast.LENGTH_SHORT).show();
 //        yValues.add(new CategoryWiseGraph_DataClass(1,50f));
 //        yValues.add(new CategoryWiseGraph_DataClass(2,25f));
 //        yValues.add(new CategoryWiseGraph_DataClass(3,36f));

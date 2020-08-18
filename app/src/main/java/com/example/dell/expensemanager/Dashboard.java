@@ -126,7 +126,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                         for (DataSnapshot date : month.getChildren()) {
                             for (DataSnapshot time : date.getChildren()) {
                                 data.add(new FirebaseData(
-                                        time.child("Ammount").getValue()+"",
+                                        time.child("Ammount").getValue() + "",
                                         time.child("Category").getValue() + "",
                                         time.child("Detail").getValue() + "",
                                         time.child("Payment Method").getValue() + "",
