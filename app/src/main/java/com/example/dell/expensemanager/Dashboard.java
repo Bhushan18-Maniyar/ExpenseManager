@@ -13,6 +13,7 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -46,6 +48,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     String user_id = "";
     private static final String TAG = "DATA";
     static Personal_Detail_Navigation_Header p;
+    ExpenseListAdapter listAdapter;
 
     ArrayList<FirebaseData> data;
 
@@ -53,9 +56,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
-
-//        data.add(new FirebaseData("500","Food","BBM pizza","cash"));
 
 
         tvTillDate = findViewById(R.id.tvTillDate);
@@ -116,6 +116,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void getList() {
+
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -125,25 +126,52 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                         for (DataSnapshot date : month.getChildren()) {
                             for (DataSnapshot time : date.getChildren()) {
                                 data.add(new FirebaseData(
-                                         time.child("Ammount").getValue() + "₹",
-                                         time.child("Category").getValue() + "",
-                                         time.child("Detail").getValue() + "",
-                                         time.child("Payment Method").getValue() + "",
-                                         time.getKey() + "",
-                                         date.getKey() + "-" + month.getKey() + "-" + year.getKey()));
+                                        time.child("Ammount").getValue() + "₹",
+                                        time.child("Category").getValue() + "",
+                                        time.child("Detail").getValue() + "",
+                                        time.child("Payment Method").getValue() + "",
+                                        time.getKey() + "",
+                                        date.getKey() + "-" + month.getKey() + "-" + year.getKey()));
+                                listAdapter.notifyDataSetChanged();
                             }
                         }
                     }
                 }
             }
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(Dashboard.this, "Some Error Occurs try after Some time..!", Toast.LENGTH_SHORT).show();
             }
         });
-        ExpenseListAdapter listAdapter = new ExpenseListAdapter(this, data);
+
+        listAdapter = new ExpenseListAdapter(this, data);
         dashboard_list_items.setAdapter(listAdapter);
+//        FirebaseListAdapter<FirebaseData> listAdapter = new FirebaseListAdapter<FirebaseData>(
+//                this,
+//                FirebaseData.class,
+//                R.layout.row_layout,
+//                ref
+//        ) {
+//            @Override
+//            protected void populateView(View view, FirebaseData model, int position) {
+//
+//                TextView category = view.findViewById(R.id.category);
+//                TextView amount = view.findViewById(R.id.amount);
+//                TextView detail = view.findViewById(R.id.detail);
+//                TextView time_date = view.findViewById(R.id.time_date);
+//
+//
+//                category.setText(model.getCategory());
+//                amount.setText(model.getAmount());
+//                detail.setText(model.getDetail());
+//                time_date.setText(model.getTime() + " | " + model.getDate());
+//            }
+//
+//        };
+//        dashboard_list_items.setAdapter(listAdapter);
+
     }
 
     @Override
