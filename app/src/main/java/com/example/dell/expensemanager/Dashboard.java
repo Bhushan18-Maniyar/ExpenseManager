@@ -50,7 +50,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     static Personal_Detail_Navigation_Header p;
     ExpenseListAdapter listAdapter;
 
-    ArrayList<FirebaseData> data;
+    static ArrayList<FirebaseData> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +126,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                         for (DataSnapshot date : month.getChildren()) {
                             for (DataSnapshot time : date.getChildren()) {
                                 data.add(new FirebaseData(
-                                        time.child("Ammount").getValue() + "₹",
+                                        time.child("Ammount").getValue()+"",
                                         time.child("Category").getValue() + "",
                                         time.child("Detail").getValue() + "",
                                         time.child("Payment Method").getValue() + "",
@@ -146,31 +146,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
-        listAdapter = new ExpenseListAdapter(this, data);
+        listAdapter = new ExpenseListAdapter(Dashboard.this, data);
         dashboard_list_items.setAdapter(listAdapter);
-//        FirebaseListAdapter<FirebaseData> listAdapter = new FirebaseListAdapter<FirebaseData>(
-//                this,
-//                FirebaseData.class,
-//                R.layout.row_layout,
-//                ref
-//        ) {
-//            @Override
-//            protected void populateView(View view, FirebaseData model, int position) {
-//
-//                TextView category = view.findViewById(R.id.category);
-//                TextView amount = view.findViewById(R.id.amount);
-//                TextView detail = view.findViewById(R.id.detail);
-//                TextView time_date = view.findViewById(R.id.time_date);
-//
-//
-//                category.setText(model.getCategory());
-//                amount.setText(model.getAmount());
-//                detail.setText(model.getDetail());
-//                time_date.setText(model.getTime() + " | " + model.getDate());
-//            }
-//
-//        };
-//        dashboard_list_items.setAdapter(listAdapter);
 
     }
 
@@ -185,7 +162,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onPause() {
         super.onPause();
-        data.clear();
+//        data.clear();
     }
 
     @Override

@@ -2,19 +2,15 @@ package com.example.dell.expensemanager;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.DropBoxManager;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 
@@ -29,7 +25,7 @@ public class CategoryWiseGraph extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_vise_graph);
+        setContentView(R.layout.activity_category_wise_graph);
 
         Spinner spinner = (Spinner) findViewById(R.id.CategorySp);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -46,17 +42,24 @@ public class CategoryWiseGraph extends AppCompatActivity {
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(false);
 
-
+        Toast.makeText(this,"Start",Toast.LENGTH_SHORT).show();
         ArrayList<Entry> yValues = new ArrayList<>();
-        yValues.add(new Entry(0, 60f));
-        yValues.add(new Entry(1,50f));
-        yValues.add(new Entry(2,25f));
-        yValues.add(new Entry(3,36f));
-        yValues.add(new Entry(4,90f));
-        yValues.add(new Entry(5,80f));
-        yValues.add(new Entry(6,60f));
+        float j = 10;
+        int length = Dashboard.data.size();
+        for(int i = 0 ; i < length ; i++){
+            yValues.add(new Entry(j,Float.parseFloat(Dashboard.data.get(i).getAmount())));
+            j = j + 10;
+            Toast.makeText(this,Dashboard.data.get(i).getAmount(),Toast.LENGTH_SHORT).show();
+        }
+        Toast.makeText(this,"End",Toast.LENGTH_SHORT).show();
+//        yValues.add(new CategoryWiseGraph_DataClass(1,50f));
+//        yValues.add(new CategoryWiseGraph_DataClass(2,25f));
+//        yValues.add(new CategoryWiseGraph_DataClass(3,36f));
+//        yValues.add(new CategoryWiseGraph_DataClass(4,90f));
+//        yValues.add(new CategoryWiseGraph_DataClass(5,80f));
+//        yValues.add(new CategoryWiseGraph_DataClass(6,60f));
 
-        LineDataSet set1 = new LineDataSet(yValues, "Data Set 1");
+        LineDataSet set1 = new LineDataSet(yValues,"Spends");
         set1.setFillAlpha(110);
         set1.setColor(Color.RED);
 
@@ -66,5 +69,6 @@ public class CategoryWiseGraph extends AppCompatActivity {
         LineData data = new LineData(dataset);
 
         mChart.setData(data);
+        Toast.makeText(this,"Final",Toast.LENGTH_SHORT).show();
     }
 }

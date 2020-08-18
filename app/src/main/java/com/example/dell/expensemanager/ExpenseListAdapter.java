@@ -38,7 +38,7 @@ public class ExpenseListAdapter extends ArrayAdapter<FirebaseData> {
 
 
         category.setText(Model.get(position).getCategory());
-        amount.setText(Model.get(position).getAmount());
+        amount.setText(Model.get(position).getAmount()+ "₹");
         detail.setText(Model.get(position).getDetail());
         time_date.setText(Model.get(position).getTime() + " | " + Model.get(position).getDate());
 

@@ -71,7 +71,6 @@ public class Login extends AppCompatActivity {
                     if (keep_Me_Login.isChecked()) {
                         //                    if keep me login then insert data to database Table ...
                         startKeepSignIn();
-                        finish();
                     } else {
                         startSignIn();
                         Toast.makeText(Login.this, "Wait..", Toast.LENGTH_SHORT).show();
@@ -130,6 +129,7 @@ public class Login extends AppCompatActivity {
 //                    If task successful then store data in SQLite for keep me LOGIN  .................
                     SplashScreen.sqLite_login.insertData(email.getText().toString().trim(), password.getText().toString().trim()); // inserting data to TABLE
                     startActivity(new Intent(Login.this, Dashboard.class));
+                    finish();
                 } else {
                     Toast.makeText(Login.this, "Invalid credentials :(", Toast.LENGTH_LONG).show();
                 }
