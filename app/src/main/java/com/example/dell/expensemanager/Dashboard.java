@@ -36,7 +36,7 @@ import androidx.fragment.app.FragmentManager;
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView tvTillDate, tvTPrice;
+    TextView tvTillDate, tvTPrice, monthly_total;
     ListView dashboard_list_items;
     FragmentManager fragmentManager;
     Fragment TopFragment, BottomFragment;
@@ -51,6 +51,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     ExpenseListAdapter listAdapter;
 
     static ArrayList<FirebaseData> data;
+    private ArrayList<FirebaseData> rececnt_spends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
         tvTillDate = findViewById(R.id.tvTillDate);
         tvTPrice = findViewById(R.id.tvTPrice);
+        monthly_total = findViewById(R.id.monthly_total);
         dashboard_list_items = findViewById(R.id.list_dashboard);
         fragmentManager = getSupportFragmentManager();
         TopFragment = fragmentManager.findFragmentById(R.id.TopFragment);
@@ -97,13 +99,33 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             getHeader();
         }
 
-//****************************************** Getting total expanse till now ******************************************
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail").
+//****************************************** Getting total expanse till now and Monthly Expense ******************************************
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail").
                 child("Total");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                tvTPrice.setText(snapshot.getValue().toString());
+                tvTPrice.setText(snapshot.getValue().toString()+" ₹");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Date d = new Date();
+        String year = d.getYear() + 1900 + "";
+        String month = d.getMonth() + 1 + "";
+        final DatabaseReference monthly_ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail").child(year).child(month);
+        monthly_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild("Month_Total")){
+                    monthly_total.setText(snapshot.child("Month_Total").getValue()+" ₹");
+                } else {
+                    monthly_ref.child("Month_Total").setValue(0);
+                }
+
             }
 
             @Override

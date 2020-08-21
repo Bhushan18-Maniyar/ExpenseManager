@@ -27,9 +27,8 @@ public class CategoryWiseGraph extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_wise_graph);
 
-        Spinner spinner = (Spinner) findViewById(R.id.CategorySp);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.expense_array_spinner, android.R.layout.simple_spinner_item);
+        Spinner spinner = findViewById(R.id.CategorySp);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.expense_array_spinner, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
@@ -48,7 +47,7 @@ public class CategoryWiseGraph extends AppCompatActivity {
         float j = 3;
         int length = Dashboard.data.size();
         for(int i = 0 ; i < length ; i++){
-            yValues.add(new Entry(j,Float.parseFloat(Dashboard.data.get(i).getAmount())));
+            yValues.add(new Entry(j, Float.parseFloat(Dashboard.data.get(i).getAmount())));
             j = j + 3;
 //            Toast.makeText(this,Dashboard.data.get(i).getAmount(),Toast.LENGTH_SHORT).show();
         }

@@ -6,4 +6,6 @@
 
     <color name="button">#4bdfd3</color>
     <color name="eye_color">#FFF</color>
+
+    <color name="dashboard_top">#1667d9</color>
 </resources>
