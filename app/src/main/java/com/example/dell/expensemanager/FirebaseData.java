@@ -1,7 +1,8 @@
 package com.example.dell.expensemanager;
 
 public class FirebaseData {
-    String amount, category, detail, payment_method, time, date;
+    String amount, category, detail, payment_method, time;
+    int date, month, year;
 
     public FirebaseData() {
     }
@@ -14,21 +15,29 @@ public class FirebaseData {
         this.time = time;
     }
 
-    public String getDate() {
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getDate() {
+
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
-    public FirebaseData(String amount, String category, String detail, String payment_method , String time, String date) {
+    public FirebaseData(String amount, String category, String detail, String payment_method , String time, int date,int month, int year) {
         this.amount = amount;
         this.category = category;
         this.detail = detail;
         this.payment_method = payment_method;
         this.time = time;
         this.date = date;
+        this.month = month;
+        this.year = year;
     }
 
     public String getAmount() {
