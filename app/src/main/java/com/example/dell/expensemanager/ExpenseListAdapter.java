@@ -19,8 +19,9 @@ import androidx.annotation.Nullable;
 public class ExpenseListAdapter extends ArrayAdapter<FirebaseData> {
     private Context context;
     private List<FirebaseData> Model;
+
     public ExpenseListAdapter(@NonNull Context context, ArrayList<FirebaseData> data) {
-        super(context,0, data);
+        super(context, 0, data);
         this.context = context;
         this.Model = data;
     }
@@ -29,7 +30,7 @@ public class ExpenseListAdapter extends ArrayAdapter<FirebaseData> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout,null,true);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout, null, true);
 
         TextView category = view.findViewById(R.id.category);
         TextView amount = view.findViewById(R.id.amount);
@@ -38,9 +39,9 @@ public class ExpenseListAdapter extends ArrayAdapter<FirebaseData> {
 
 
         category.setText(Model.get(position).getCategory());
-        amount.setText(Model.get(position).getAmount()+ "₹");
+        amount.setText(Model.get(position).getAmount() + "₹");
         detail.setText(Model.get(position).getDetail());
-        time_date.setText(Model.get(position).getTime() + " | " + Model.get(position).getDate());
+        time_date.setText(Model.get(position).getTime() + " | " + Model.get(position).getDate() + "-" + Model.get(position).getMonth() + "-" + Model.get(position).getYear());
 
         return view;
     }

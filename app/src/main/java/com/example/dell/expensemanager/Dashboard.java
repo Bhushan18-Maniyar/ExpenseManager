@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,6 +52,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     ExpenseListAdapter listAdapter;
 
     static ArrayList<FirebaseData> data;
+    ArrayList<FirebaseData> recent_List;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +121,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail");
         ref.addValueEventListener(new ValueEventListener() {
+
+            CountDownLatch countDownLatch = new CountDownLatch(1);
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot year : snapshot.getChildren()) {
@@ -126,17 +131,29 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                         for (DataSnapshot date : month.getChildren()) {
                             for (DataSnapshot time : date.getChildren()) {
                                 data.add(new FirebaseData(
-                                        time.child("Ammount").getValue()+"",
+                                        time.child("Ammount").getValue() + "",
                                         time.child("Category").getValue() + "",
                                         time.child("Detail").getValue() + "",
                                         time.child("Payment Method").getValue() + "",
                                         time.getKey() + "",
-                                        date.getKey() + "-" + month.getKey() + "-" + year.getKey()));
-                                listAdapter.notifyDataSetChanged();
+                                        Integer.parseInt(date.getKey()+""),
+                                        Integer.parseInt(month.getKey()+""),
+                                        Integer.parseInt(year.getKey()+"") ));
+//                                listAdapter.notifyDataSetChanged();
                             }
                         }
                     }
+                    countDownLatch.countDown();
                 }
+
+                try {
+                    countDownLatch.await();
+                    getRecentList();
+
+                } catch (Exception e) {
+                    Toast.makeText(Dashboard.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
             }
 
 
@@ -146,10 +163,10 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
-        listAdapter = new ExpenseListAdapter(Dashboard.this, data);
-        dashboard_list_items.setAdapter(listAdapter);
-
+//        listAdapter = new ExpenseListAdapter(Dashboard.this, data);
+//        dashboard_list_items.setAdapter(listAdapter);
     }
+
 
     @Override
     protected void onResume() {
@@ -172,6 +189,23 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         } else {
             super.onBackPressed();
         }
+    }
+    private void getRecentList() {
+        recent_List = new ArrayList<>();
+        listAdapter = new ExpenseListAdapter(Dashboard.this, recent_List);
+        int length = data.size();
+        if (length <= 10) {
+            for (int i = length - 1; i >= 0; i--) {
+                recent_List.add(data.get(i));
+                listAdapter.notifyDataSetChanged();
+            }
+        } else {
+            for (int i = length - 1; i >= length-10; i--) {
+                recent_List.add(data.get(i));
+                listAdapter.notifyDataSetChanged();
+            }
+        }
+        dashboard_list_items.setAdapter(listAdapter);
     }
 
     @Override
@@ -202,6 +236,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
 
             case R.id.view_expense_date_wise: {
+                startActivity(new Intent(Dashboard.this, DateWiseGraph.class));
                 Toast.makeText(Dashboard.this, "date wise", Toast.LENGTH_SHORT).show();
                 break;
             }
