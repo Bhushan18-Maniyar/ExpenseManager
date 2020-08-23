@@ -22,10 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -36,7 +35,7 @@ import androidx.fragment.app.FragmentManager;
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView tvTillDate, tvTPrice;
+    TextView tvTillDate, tvTPrice, monthly_total;
     ListView dashboard_list_items;
     FragmentManager fragmentManager;
     Fragment TopFragment, BottomFragment;
@@ -49,17 +48,20 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private static final String TAG = "DATA";
     static Personal_Detail_Navigation_Header p;
     ExpenseListAdapter listAdapter;
-
+    ArrayList<FirebaseData> recent_List;
     static ArrayList<FirebaseData> data;
+    private ArrayList<FirebaseData> rececnt_spends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        recent_List = new ArrayList<>();
 
         tvTillDate = findViewById(R.id.tvTillDate);
         tvTPrice = findViewById(R.id.tvTPrice);
+        monthly_total = findViewById(R.id.monthly_total);
         dashboard_list_items = findViewById(R.id.list_dashboard);
         fragmentManager = getSupportFragmentManager();
         TopFragment = fragmentManager.findFragmentById(R.id.TopFragment);
@@ -93,17 +95,37 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             user_id = user.getUid();
-            Toast.makeText(this, user.getUid(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, user.getUid(), Toast.LENGTH_LONG).show();
             getHeader();
         }
 
-//****************************************** Getting total expanse till now ******************************************
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail").
+//****************************************** Getting total expanse till now and Monthly Expense ******************************************
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail").
                 child("Total");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                tvTPrice.setText(snapshot.getValue().toString());
+                tvTPrice.setText(snapshot.getValue().toString() + " ₹");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Date d = new Date();
+        String year = d.getYear() + 1900 + "";
+        String month = d.getMonth() + 1 + "";
+        final DatabaseReference monthly_ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail").child(year).child(month);
+        monthly_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChild("Month_Total")) {
+                    monthly_total.setText(snapshot.child("Month_Total").getValue() + " ₹");
+                } else {
+                    monthly_ref.child("Month_Total").setValue(0);
+                }
+
             }
 
             @Override
@@ -119,6 +141,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(user_id).child("Expense_Detail");
         ref.addValueEventListener(new ValueEventListener() {
+
+            CountDownLatch countDownLatch = new CountDownLatch(1);
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot year : snapshot.getChildren()) {
@@ -126,17 +151,29 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                         for (DataSnapshot date : month.getChildren()) {
                             for (DataSnapshot time : date.getChildren()) {
                                 data.add(new FirebaseData(
-                                        time.child("Ammount").getValue()+"",
+                                        time.child("Ammount").getValue() + "",
                                         time.child("Category").getValue() + "",
                                         time.child("Detail").getValue() + "",
                                         time.child("Payment Method").getValue() + "",
                                         time.getKey() + "",
-                                        date.getKey() + "-" + month.getKey() + "-" + year.getKey()));
-                                listAdapter.notifyDataSetChanged();
+                                        Integer.parseInt(date.getKey() + ""),
+                                        Integer.parseInt(month.getKey() + ""),
+                                        Integer.parseInt(year.getKey() + "")));
+//                                listAdapter.notifyDataSetChanged();
                             }
                         }
                     }
+                    countDownLatch.countDown();
                 }
+
+                try {
+                    countDownLatch.await();
+                    getRecentList();
+
+                } catch (Exception e) {
+                    Toast.makeText(Dashboard.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
             }
 
 
@@ -156,6 +193,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         super.onResume();
         data = new ArrayList<>();
         getList();
+
+        recent_List.clear();
+        getRecentList();
 //        dashboard_list_items.notify();
     }
 
@@ -174,15 +214,31 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
+//**********************************************    Getting recent 10 Expense Item ***********************************************
+    private void getRecentList() {
+        recent_List = new ArrayList<>();
+        listAdapter = new ExpenseListAdapter(Dashboard.this, recent_List);
+        int length = data.size();
+        if (length <= 10) {
+            for (int i = length - 1; i >= 0; i--) {
+                recent_List.add(data.get(i));
+                listAdapter.notifyDataSetChanged();
+            }
+        } else {
+            for (int i = length - 1; i >= length - 10; i--) {
+                recent_List.add(data.get(i));
+                listAdapter.notifyDataSetChanged();
+            }
+        }
+        dashboard_list_items.setAdapter(listAdapter);
+    }
+//********************************************************************************************************************************
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-
-            case R.id.add_income: {
-                Toast.makeText(Dashboard.this, "Add Income", Toast.LENGTH_SHORT).show();
-                break;
-            }
 
             case R.id.add_expense: {
                 startActivity(new Intent(Dashboard.this, AddExpense.class));
@@ -190,7 +246,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 break;
             }
 
-            case R.id.recent_added: {
+            case R.id.all_expense: {
+                startActivity(new Intent(Dashboard.this, All_Expense_List.class));
                 Toast.makeText(Dashboard.this, "recent added", Toast.LENGTH_SHORT).show();
                 break;
             }

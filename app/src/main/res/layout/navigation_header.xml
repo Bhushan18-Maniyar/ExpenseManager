@@ -35,12 +35,12 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/nav_edit"
-        android:layout_width="25sp"
-        android:layout_height="25sp"
-        android:layout_margin="10dp"
-        android:background="@drawable/edit_img" />
+    <!--<ImageView-->
+        <!--android:id="@+id/nav_edit"-->
+        <!--android:layout_width="25sp"-->
+        <!--android:layout_height="25sp"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:background="@drawable/edit_img" />-->
 
 
 
