@@ -13,7 +13,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:gravity="center_horizontal"
-        android:text="Spends"
+        android:text="Recent Spends"
         android:textSize="18sp"
         android:textStyle="bold" />
 

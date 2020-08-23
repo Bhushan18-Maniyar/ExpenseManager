@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.icu.util.IndianCalendar;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +37,15 @@ public class AddExpense extends AppCompatActivity {
     Button add_expense;
     static DatabaseReference ref;
     private int current_expense = 0;
+
+    String uid = "";
+    Date d;
+    String year = "";
+    String month = "";
+    String day = "";
+
+    SimpleDateFormat sdf;
+    String currentDateTimeString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,46 +83,140 @@ public class AddExpense extends AppCompatActivity {
     private void storeExpense() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            String uid = user.getUid();
-            Date d = new Date();
-            String year = d.getYear() + 1900 + "";
-            String month = d.getMonth() + 1 + "";
-            String day = d.getDate() + "";
+            uid = user.getUid();
+            d = new Date();
+            year = d.getYear() + 1900 + "";
+            month = d.getMonth() + 1 + "";
+            day = d.getDate() + "";
 
             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
             String currentDateTimeString = sdf.format(d);
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(uid).
-                    child("Expense_Detail").
-                    child(year).
-                    child(month).
-                    child(day).
-                    child(currentDateTimeString);
 
-            current_expense = Integer.parseInt(ammount.getText().toString());
-            Map<String, String> expense_detail = new HashMap<>();
-            expense_detail.put("Category", select_category.getSelectedItem().toString());
-            expense_detail.put("Payment Method", select_payment_method.getSelectedItem().toString());
-            expense_detail.put("Ammount", ammount.getText().toString());
-            expense_detail.put("Detail", detail.getText().toString());
-            ref.setValue(expense_detail);
-            Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
+            final DatabaseReference monthTotalRef = FirebaseDatabase.getInstance().getReference().child(uid).child("Expense_Detail").child(year).child(month);
+
+            monthTotalRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.hasChild("Month_Total")) {
+                        Toast.makeText(AddExpense.this,"hasChild",Toast.LENGTH_SHORT).show();
+                        addIntoMonth();
+                    }
+//                    else {
+//                        create_Month();
+//                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
         } else {
             Toast.makeText(this, "No User...", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void addIntoMonth() {
+        d = new Date();
+        year = d.getYear() + 1900 + "";
+        month = d.getMonth() + 1 + "";
+        day = d.getDate() + "";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+        String currentDateTimeString = sdf.format(d);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(uid).
+                child("Expense_Detail").
+                child(year).
+                child(month).
+                child(day).
+                child(currentDateTimeString);
+
+        current_expense = Integer.parseInt(ammount.getText().toString());
+        final Map<String, String> expense_detail = new HashMap<>();
+        expense_detail.put("Category", select_category.getSelectedItem().toString());
+        expense_detail.put("Payment Method", select_payment_method.getSelectedItem().toString());
+        expense_detail.put("Ammount", ammount.getText().toString());
+        expense_detail.put("Detail", detail.getText().toString());
+        ref.setValue(expense_detail); /////////////////////////////////////////////////////////////////++++++++++++++++++++++++++++++++++++
+
+        final DatabaseReference monthTotalRef = FirebaseDatabase.getInstance().getReference().child(uid).child("Expense_Detail").child(year).child(month).child("Month_Total");
+
+        monthTotalRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int monthly_total = Integer.parseInt(snapshot.getValue() + "");
+                monthly_total = monthly_total + Integer.parseInt(expense_detail.get("Ammount"));
+                monthTotalRef.setValue(monthly_total);
+                expense_detail.replace("Ammount","0");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
+    }
+
+//    private void create_Month() {
+//
+//
+//        d = new Date();
+//        year = d.getYear() + 1900 + "";
+//        month = d.getMonth() + 1 + "";
+//        day = d.getDate() + "";
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+//        String currentDateTimeString = sdf.format(d);
+//
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(uid).
+//                child("Expense_Detail").
+//                child(year).
+//                child(month).
+//                child(day).
+//                child(currentDateTimeString);
+//
+//        current_expense = Integer.parseInt(ammount.getText().toString());
+//        final Map<String, String> expense_detail = new HashMap<>();
+//        expense_detail.put("Category", select_category.getSelectedItem().toString());
+//        expense_detail.put("Payment Method", select_payment_method.getSelectedItem().toString());
+//        expense_detail.put("Ammount", ammount.getText().toString());
+//        expense_detail.put("Detail", detail.getText().toString());
+//        ref.setValue(expense_detail); /////////////////////////////////////////////////////////////////++++++++++++++++++++++++++++++++++++
+//
+//        final DatabaseReference monthRef = FirebaseDatabase.getInstance().getReference().child(uid).child("Expense_Detail").child(year).child(month).child("Month_Total");
+//        monthRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                monthRef.setValue(current_expense);
+//                current_expense = 0;
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//
+//        Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
+//
+//    }
+
     private void updateTotal() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
-            Date d = new Date();
-            String year = d.getYear() + 1900 + "";
             ref = FirebaseDatabase.getInstance().getReference().child(uid).child("Expense_Detail").child("Total");
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     int total = Integer.parseInt(snapshot.getValue().toString());
-//                  UPDATING TOTAL EXPENSE OF CURRENT YEAR
+//                  UPDATING TOTAL EXPENSE
                     ref.setValue(total + current_expense);
                     current_expense = 0;
                 }

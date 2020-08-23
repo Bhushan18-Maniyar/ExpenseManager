@@ -13,9 +13,9 @@
             android:id="@+id/add_expense"
             android:icon="@drawable/add_expense"/>
 
-        <item android:title="Recent Expense"
-            android:icon="@drawable/recent_added"
-            android:id="@+id/recent_added"/>
+        <item android:title="All Expense List"
+            android:icon="@drawable/all_list_icon"
+            android:id="@+id/all_expense"/>
 
         <item android:title="View Expense Date wise"
             android:id="@+id/view_expense_date_wise"

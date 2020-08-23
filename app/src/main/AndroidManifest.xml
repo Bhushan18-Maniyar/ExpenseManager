@@ -37,8 +37,6 @@
 
         <activity android:name=".CategoryWiseGraph" />
 
-        <activity android:name=".DateWiseGraph" />
-
     </application>
 
 </manifest>
