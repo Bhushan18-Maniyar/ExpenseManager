@@ -43,6 +43,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navigationView;
     DrawerLayout drawerLayout;
+
     TextView header_email, header_name;
     String user_id = "";
     private static final String TAG = "DATA";
