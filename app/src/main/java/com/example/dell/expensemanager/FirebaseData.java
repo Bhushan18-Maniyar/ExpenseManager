@@ -4,7 +4,7 @@ public class FirebaseData {
     String amount, category, detail, payment_method, time;
     int date, month, year;
 
-    public FirebaseData() {
+    public FirebaseData(String ammount, String category, String detail, String payment_method, String s, String s1) {
     }
 
     public String getTime() {

@@ -202,6 +202,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
 
             case R.id.view_expense_date_wise: {
+                startActivity(new Intent(Dashboard.this, DateWiseGraph.class));
                 Toast.makeText(Dashboard.this, "date wise", Toast.LENGTH_SHORT).show();
                 break;
             }
