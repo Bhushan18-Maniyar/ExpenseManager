@@ -27,10 +27,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.leo.simplearcloader.SimpleArcLoader
+                android:id="@+id/loader"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                app:arc_style="simple_arc"/>
+
             <LinearLayout
+                android:id="@+id/main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
                 <fragment
@@ -39,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="2"
-                    tools:layout="@layout/fragment_top_display" />
+                    tools:layout="@layout/fragment_top_display"/>
 
                 <fragment
                     android:id="@+id/BottomFragment"

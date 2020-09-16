@@ -3,33 +3,44 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
-        <entry key="vectorWizard">
+        <entry key="imageWizard">
           <value>
             <PersistentState>
               <option name="children">
                 <map>
-                  <entry key="vectorAssetStep">
+                  <entry key="imageAssetPanel">
                     <value>
                       <PersistentState>
                         <option name="children">
                           <map>
-                            <entry key="clipartAsset">
+                            <entry key="launcher">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="foregroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="scalingPercent" value="56" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_circle_outline_black_24dp.xml" />
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="060405" />
+                                      <entry key="foregroundImage" value="G:\BHUSHAN\ANDROID\ExpenseManager\app\src\main\res\mipmap-hdpi\expense_manager.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
                               </value>
                             </entry>
-                          </map>
-                        </option>
-                        <option name="values">
-                          <map>
-                            <entry key="outputName" value="add_expense" />
-                            <entry key="sourceFile" value="C:\Users\Dell" />
                           </map>
                         </option>
                       </PersistentState>

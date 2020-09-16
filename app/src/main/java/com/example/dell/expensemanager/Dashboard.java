@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.leo.simplearcloader.SimpleArcLoader;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,12 +55,21 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     static ArrayList<FirebaseData> data;
     private ArrayList<FirebaseData> rececnt_spends;
 
+    SimpleArcLoader loader;
+    LinearLayout main_layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
         recent_List = new ArrayList<>();
+
+        loader = findViewById(R.id.loader);
+        loader.setVisibility(View.VISIBLE);
+        loader.start();
+        main_layout = findViewById(R.id.main_layout);
+
 
         tvTillDate = findViewById(R.id.tvTillDate);
         tvTPrice = findViewById(R.id.tvTPrice);
@@ -91,7 +102,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         View v = navigationView.getHeaderView(0);
         header_name = v.findViewById(R.id.nav_person_name);
         header_email = v.findViewById(R.id.nav_person_email);
-
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -169,6 +179,12 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
                 try {
                     countDownLatch.await();
+
+                    loader.stop();
+                    loader.setVisibility(View.GONE);
+                    main_layout.setVisibility(View.VISIBLE);
+
+
                     getRecentList();
 
                 } catch (Exception e) {

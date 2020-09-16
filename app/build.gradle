@@ -56,6 +56,9 @@ dependencies {
 
 //    Validation
     implementation 'com.github.thyrlian:AwesomeValidation:v4.2'
+
+//    Arc Loader
+    implementation 'com.leo.simplearcloader:simplearcloader:1.0.+'
 }
 
 apply plugin: 'com.google.gms.google-services'
